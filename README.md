@@ -2,8 +2,7 @@
 Proste i niezawodne narzędzie dla kierowców zawodowych do bieżącej kontroli czasu jazdy, pracy i odpoczynku.
 <p align="center">
   <a href="https://tacho.kocie.mba" target="_blank">
-    <img src="<img width="1024" height="500" alt="github_pl_tacho" src="https://github.com/user-attachments/assets/f3043337-c0c8-4d1a-9e01-11825191f643" />
-" width="800" height="450" alt="TACHO app - tacho.kocie.mba">
+    <img src="https://github.com/user-attachments/assets/f3043337-c0c8-4d1a-9e01-11825191f643" width="800" height="450" alt="TACHO app - tacho.kocie.mba">
   </a>
 </p>
 <h2 align="center">
