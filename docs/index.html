@@ -1,1 +1,310 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://kociembadamian.github.io/tacho-app/">
 
+    <title>TACHO app | Rejestracja czasu jazdy, pracy i odpoczynku kierowcy (Rozp. WE 561/2006)</title>
+    <meta name="description" content="TACHO app – niezależne, darmowe narzędzie do monitorowania aktywności kierowców: czasu jazdy, pracy i odpoczynku zgodnie z Rozporządzeniem (WE) 561/2006. Nie jest tachografem, ale wspiera kontrolę naruszeń na bieżąco.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="kocie.mba">
+    <meta property="og:title" content="TACHO app – dziennik czasu pracy kierowcy (Rozp. WE 561/2006)">
+    <meta property="og:description" content="Proste i niezawodne narzędzie dla kierowców zawodowych do bieżącej kontroli czasu jazdy, pracy i odpoczynku.">
+    <meta property="og:image" content="https://github.com/user-attachments/assets/f3043337-c0c8-4d1a-9e01-11825191f643">
+    <meta property="og:url" content="https://kociembadamian.github.io/tacho-app/">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="alternate" hreflang="pl" href="https://kociembadamian.github.io/tacho-app/">
+    <link rel="alternate" hreflang="en" href="https://kociembadamian.github.io/tacho-app/">
+    <link rel="alternate" hreflang="x-default" href="https://kociembadamian.github.io/tacho-app/">
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23017ffe'/%3E%3Ctext x='32' y='42' font-family='Arial, sans-serif' font-size='26' font-weight='900' fill='white' text-anchor='middle'%3E.mba%3C/text%3E%3C/svg%3E">
+
+    <script>
+      (function () {
+        var stored = localStorage.getItem('siteLang');
+        var browserIsPl = (navigator.language || navigator.userLanguage || '').toLowerCase().startsWith('pl');
+        var lang = stored || (browserIsPl ? 'pl' : 'en');
+        document.documentElement.lang = lang;
+        document.documentElement.classList.add('lang-' + lang);
+      })();
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "TACHO app",
+          "url": "https://tacho.kocie.mba",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web, PWA, Android, Windows",
+          "author": { "@type": "Person", "name": "Damian Kociemba", "url": "https://kocie.mba/" },
+          "description": "Dziennik czasu pracy kierowcy zgodny z Rozporządzeniem (WE) 561/2006 – rejestracja aktywności, monitorowanie naruszeń, tryb tandem.",
+          "sameAs": ["https://github.com/kociembadamian/tacho-app"]
+        }
+      ]
+    }
+    </script>
+
+    <style>
+        :root {
+            --bg-color: #f3f5f9; --text-main: #10151f; --text-sub: #57626f; --accent: #017ffe;
+            --divider: rgba(16, 21, 31, 0.08); --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.7); --glass-shadow: rgba(31, 60, 110, 0.12);
+            --glass-highlight: rgba(255, 255, 255, 0.85); --btn-bg: rgba(255, 255, 255, 0.55);
+            --btn-border: rgba(255, 255, 255, 0.7); --chip-bg: rgba(16, 21, 31, 0.04); --chip-border: rgba(16, 21, 31, 0.08);
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0b0d10; --text-main: #eef1f6; --text-sub: #9aa4b2; --accent: #4da3ff;
+                --divider: rgba(255, 255, 255, 0.08); --glass-bg: rgba(255, 255, 255, 0.06);
+                --glass-border: rgba(255, 255, 255, 0.1); --glass-shadow: rgba(0, 0, 0, 0.4);
+                --glass-highlight: rgba(255, 255, 255, 0.09); --btn-bg: rgba(255, 255, 255, 0.07);
+                --btn-border: rgba(255, 255, 255, 0.14); --chip-bg: rgba(255, 255, 255, 0.05); --chip-border: rgba(255, 255, 255, 0.09);
+            }
+        }
+        html.lang-en .pl { display: none !important; }
+        html.lang-pl .en { display: none !important; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color); color: var(--text-main); min-height: 100vh;
+            display: flex; justify-content: center; padding: 20px 16px 50px;
+        }
+        .page { width: 100%; max-width: 680px; display: flex; flex-direction: column; gap: 34px; animation: fadeIn 0.7s ease-out; }
+        .glass-group {
+            background: var(--glass-bg); backdrop-filter: blur(20px) saturate(150%); -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border: 1px solid var(--glass-border); border-radius: 22px;
+            box-shadow: 0 6px 24px var(--glass-shadow), inset 0 1px 0 var(--glass-highlight); overflow: hidden;
+        }
+        .topbar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid var(--divider); }
+        .back-link { font-size: 0.85rem; font-weight: 700; color: var(--text-sub); text-decoration: none; }
+        .back-link:hover { color: var(--accent); }
+        .lang-switch { display: flex; gap: 4px; background: var(--chip-bg); border: 1px solid var(--chip-border); border-radius: 20px; padding: 4px; }
+        .lang-switch button { -webkit-appearance: none; appearance: none; border: none; background: transparent; color: var(--text-sub); font-family: inherit; font-size: 0.75rem; font-weight: 700; padding: 6px 12px; border-radius: 16px; cursor: pointer; transition: all 0.2s ease; }
+        html.lang-pl .lang-switch button[data-lang="pl"], html.lang-en .lang-switch button[data-lang="en"] { background: var(--accent); color: #fff; }
+        .hero { text-align: left; }
+        h1 { font-size: 1.85rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 0.4rem; }
+        .hero-role { font-size: 1.02rem; color: var(--accent); font-weight: 700; margin-bottom: 1rem; }
+        .hero-bio { font-size: 0.98rem; line-height: 1.68; color: var(--text-sub); margin-bottom: 1.6rem; }
+        .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+        .product-cta { display: inline-block; font-size: 0.92rem; font-weight: 700; color: #fff; background: var(--accent); padding: 12px 22px; border-radius: 12px; text-decoration: none; }
+        .legal-links-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+        .legal-pill { font-size: 0.8rem; font-weight: 600; color: var(--text-sub); background: var(--chip-bg); border: 1px solid var(--chip-border); padding: 8px 14px; border-radius: 20px; text-decoration: none; transition: all 0.2s ease; }
+        .legal-pill:hover { color: var(--accent); border-color: var(--accent); }
+        .screenshot-wrap { border-radius: 18px; overflow: hidden; box-shadow: 0 10px 30px var(--glass-shadow); border: 1px solid var(--divider); }
+        .screenshot-wrap img { display: block; width: 100%; height: auto; }
+        .section-title { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-sub); font-weight: 700; margin-bottom: 12px; }
+        .group-item { padding: 22px; }
+        .group-item + .group-item { border-top: 1px solid var(--divider); }
+        .feature-name { font-size: 1.02rem; font-weight: 800; margin-bottom: 6px; }
+        .feature-desc { font-size: 0.92rem; line-height: 1.65; color: var(--text-sub); }
+        .tools-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--text-sub); background: var(--chip-bg); border: 1px solid var(--chip-border); padding: 7px 14px; border-radius: 20px; }
+        .install-step { display: flex; gap: 14px; margin-bottom: 14px; }
+        .install-step:last-child { margin-bottom: 0; }
+        .install-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; }
+        .install-text { font-size: 0.9rem; line-height: 1.55; color: var(--text-sub); padding-top: 3px; }
+        .install-text code { background: var(--chip-bg); padding: 2px 6px; border-radius: 6px; font-size: 0.85em; }
+        .option-title { font-weight: 800; font-size: 0.98rem; margin-bottom: 14px; }
+        .download-icons { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .store-icon-link { -webkit-appearance: none; appearance: none; display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 10px; background: var(--btn-bg); border: 1px solid var(--btn-border); color: var(--text-main); text-decoration: none; cursor: pointer; transition: all 0.2s ease; font-family: inherit; font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
+        .store-icon-link:hover { border-color: var(--accent); color: var(--accent); }
+        .store-icon-link svg { width: 15px; height: 15px; flex-shrink: 0; }
+        .mono-badge-sm { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; border-radius: 4px; background: #C7000B; color: #fff; font-size: 8px; font-weight: 900; flex-shrink: 0; }
+        .store-tip-wrap { position: relative; display: inline-flex; }
+        .store-tip { position: absolute; bottom: calc(100% + 9px); left: 50%; transform: translateX(-50%) translateY(4px); background: var(--text-main); color: var(--bg-color); font-size: 0.72rem; font-weight: 600; line-height: 1.4; padding: 8px 12px; border-radius: 10px; width: max-content; max-width: 210px; text-align: center; box-shadow: 0 8px 22px rgba(0,0,0,0.22); opacity: 0; visibility: hidden; transition: opacity .15s ease, transform .15s ease; z-index: 20; pointer-events: none; }
+        .store-tip-wrap.tip-open .store-tip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+        .legal-text { font-size: 0.85rem; line-height: 1.65; color: var(--text-sub); }
+        footer { padding-top: 20px; border-top: 1px solid var(--divider); font-size: 0.8rem; color: var(--text-sub); line-height: 1.7; }
+        footer a { color: var(--text-sub); text-decoration: none; }
+        footer a:hover { color: var(--accent); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 480px) { h1 { font-size: 1.5rem; } .cta-row { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <div class="topbar">
+            <a href="https://kocie.mba" class="back-link">&larr; kocie.mba</a>
+            <div class="lang-switch">
+                <button type="button" data-lang="pl" onclick="setSiteLang('pl')">PL</button>
+                <button type="button" data-lang="en" onclick="setSiteLang('en')">EN</button>
+            </div>
+        </div>
+
+        <div class="hero">
+            <h1>TACHO app</h1>
+            <p class="hero-role">
+                <span class="pl">Rejestracja czasu jazdy, pracy i odpoczynku &middot; Rozporządzenie (WE) 561/2006</span>
+                <span class="en">Driving, work and rest time logging &middot; EC Regulation 561/2006</span>
+            </p>
+            <p class="hero-bio">
+                <span class="pl">Proste i niezawodne narzędzie dla kierowców zawodowych do bieżącej kontroli czasu jazdy, pracy i odpoczynku. Aplikacja ułatwia codzienną pracę na trasie, automatyzując wyliczenia wynikające z unijnego Rozporządzenia (WE) nr 561/2006 oraz ostrzegając o ryzyku przekroczenia dopuszczalnych limitów. System ułatwia prawidłowe planowanie dnia pracy, kontrolowanie odpoczynków oraz eliminację błędów przy ręcznym prowadzeniu ewidencji aktywności.</span>
+                <span class="en">A simple and reliable tool for professional drivers to keep track of driving, work and rest time. The app makes daily work on the road easier by automating calculations arising from EU Regulation (EC) No 561/2006 and warning about the risk of exceeding permitted limits. The system supports proper planning of the working day, monitoring rest periods, and eliminating errors from manual activity logging.</span>
+            </p>
+            <div class="cta-row">
+                <a href="https://tacho.kocie.mba" class="product-cta"><span class="pl">Uruchom aplikację &rarr;</span><span class="en">Launch the app &rarr;</span></a>
+            </div>
+            <p style="font-size:0.8rem; color:var(--text-sub); margin-top:10px;">
+                <span class="pl">Aplikacja automatycznie rozpozna Twoje urządzenie (iOS, Android, Windows) i dopasuje odpowiednią wersję lub opcję instalacji PWA.</span>
+                <span class="en">The app automatically detects your device (iOS, Android, Windows) and offers the matching version or PWA install option.</span>
+            </p>
+        </div>
+
+        <div class="screenshot-wrap">
+            <a href="https://tacho.kocie.mba" target="_blank">
+                <img src="https://github.com/user-attachments/assets/f3043337-c0c8-4d1a-9e01-11825191f643" width="800" height="450" alt="TACHO app - tacho.kocie.mba">
+            </a>
+        </div>
+
+        <section>
+            <div class="section-title"><span class="pl">Najważniejsze funkcje</span><span class="en">Key features</span></div>
+            <div class="glass-group">
+                <div class="group-item">
+                    <div class="feature-name"><span class="pl">Rejestracja aktywności i tryb automatyczny</span><span class="en">Activity logging and automatic mode</span></div>
+                    <div class="feature-desc">
+                        <span class="pl">Ręczne wprowadzanie zdarzeń lub szybkie przełączanie stanów (Jazda, Praca, Gotowość, Pauza) za pomocą przycisku Start/Stop. Aplikacja pozwala na bieżąco korygować historię wpisów manualnych, co ułatwia odwzorowanie rzeczywistego przebiegu dnia pracy.</span>
+                        <span class="en">Manual event entry or quick switching between states (Driving, Work, Standby, Break) via a Start/Stop button. The app lets you correct the history of manual entries on the fly, making it easier to reflect the actual course of the working day.</span>
+                    </div>
+                </div>
+                <div class="group-item">
+                    <div class="feature-name"><span class="pl">Analiza naruszeń przepisów (561/2006)</span><span class="en">Analysis of regulatory violations (561/2006)</span></div>
+                    <div class="feature-desc">
+                        <span class="pl">Algorytm analizuje wprowadzane dane w czasie rzeczywistym, uwzględniając dzienny limit jazdy (9h, z dopuszczalnym przedłużeniem do 10h), wymagane przerwy w jeździe ciągłej (4,5h), normy odpoczynków dziennych (regularne i skrócone) oraz limity tygodniowego i dwutygodniowego czasu jazdy.</span>
+                        <span class="en">The algorithm analyses the entered data in real time, taking into account the daily driving limit (9h, with permitted extensions up to 10h), required breaks during continuous driving (4.5h), daily rest period rules (regular and reduced), and weekly and bi-weekly driving time limits.</span>
+                    </div>
+                </div>
+                <div class="group-item">
+                    <div class="feature-name"><span class="pl">Obsługa jazdy w załodze (Tandem / Podwójna obsada)</span><span class="en">Support for crewed driving (Tandem / Double crew)</span></div>
+                    <div class="feature-desc">
+                        <span class="pl">Dedykowany tryb pracy dla dwóch kierowców przebywających w pojeździe jednocześnie. Pozwala na sprawne rejestrowanie aktywności obu członków załogi i płynną zmianę ról bez konieczności przelogowywania się czy tworzenia osobnych kont.</span>
+                        <span class="en">A dedicated mode for two drivers present in the vehicle at the same time. It allows efficient logging of activity for both crew members and a seamless switch of roles, with no need to log out or create separate accounts.</span>
+                    </div>
+                </div>
+                <div class="group-item">
+                    <div class="feature-name"><span class="pl">Prywatność na pierwszym miejscu (Privacy-first)</span><span class="en">Privacy-first</span></div>
+                    <div class="feature-desc">
+                        <span class="pl">Wszystkie dane dotyczące Twoich tras, aktywności i czasu pracy są zapisywane i przechowywane wyłącznie w pamięci Twojego telefonu. Aplikacja nie wymaga zakładania konta ani wysyłania historii przejazdów na zewnętrzne serwery. Jedyne przesyłane informacje to anonimowe statystyki użycia i raporty błędów, służące do poprawy stabilności programu.</span>
+                        <span class="en">All data on your routes, activity and working time is saved and stored exclusively in your phone's memory. The app doesn't require creating an account or sending trip history to external servers. The only information transmitted is anonymous usage statistics and error reports, used to improve app stability.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-title"><span class="pl">Dla kogo jest ta aplikacja?</span><span class="en">Who is this app for?</span></div>
+            <div class="tools-chip-row">
+                <span class="chip"><span class="pl">Kierowcy w transporcie krajowym i międzynarodowym (C, C+E)</span><span class="en">Domestic &amp; international truck drivers (C, C+E)</span></span>
+                <span class="chip"><span class="pl">Kierowcy w obsadzie podwójnej</span><span class="en">Drivers working in a double crew</span></span>
+                <span class="chip"><span class="pl">Dodatkowy weryfikator obok tachografu cyfrowego</span><span class="en">Extra check alongside a digital tachograph</span></span>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-title"><span class="pl">Jak zainstalować i aktualizować?</span><span class="en">How to install and update?</span></div>
+            <div class="glass-group">
+                <div class="group-item">
+                    <div class="option-title"><span class="pl">Opcja 1 &middot; Obtainium (zalecane &mdash; automatyczne aktualizacje)</span><span class="en">Option 1 &middot; Obtainium (recommended &mdash; automatic updates)</span></div>
+                    <div class="install-step"><div class="install-num">1</div><div class="install-text"><span class="pl">Zainstaluj darmową aplikację OBTAINIUM.</span><span class="en">Install the free OBTAINIUM app.</span></div></div>
+                    <div class="install-step"><div class="install-num">2</div><div class="install-text"><span class="pl">Wklej w niej link do repozytorium:</span><span class="en">Paste the link to this repository into it:</span> <code>https://github.com/kociembadamian/tacho-app/</code></div></div>
+                    <div class="install-step"><div class="install-num">3</div><div class="install-text"><span class="pl">Kliknij "Add" &mdash; od teraz urządzenie automatycznie wykryje nowe wersje i zaproponuje aktualizację.</span><span class="en">Click "Add" &mdash; your device will now automatically detect new versions and prompt you to update.</span></div></div>
+                </div>
+                <div class="group-item">
+                    <div class="option-title"><span class="pl">Opcja 2 &middot; bezpośrednie pobranie APK</span><span class="en">Option 2 &middot; direct APK download</span></div>
+                    <div class="install-step"><div class="install-num">1</div><div class="install-text"><span class="pl">Przejdź do zakładki</span> <a href="https://github.com/kociembadamian/tacho-app/releases/latest" style="color:var(--accent);">Releases</a>.</div></div>
+                    <div class="install-step"><div class="install-num">2</div><div class="install-text"><span class="pl">Rozwiń sekcję ASSETS.</span><span class="en">Expand the ASSETS section.</span></div></div>
+                    <div class="install-step"><div class="install-num">3</div><div class="install-text"><span class="pl">Pobierz plik</span> <code>app-release-signed.apk</code> <span class="pl">i zainstaluj go na urządzeniu.</span><span class="en">and install it on your device.</span></div></div>
+                    <div class="download-icons" style="margin-top:18px;">
+                        <a href="https://play.google.com/store/apps/details?id=mba.kocie.tacho.twa" target="_blank" rel="noopener" class="store-icon-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 3.6c0-.9 1-1.4 1.7-.9l13.8 8.4c.7.4.7 1.4 0 1.8L5.7 21.3c-.7.5-1.7 0-1.7-.9V3.6Z"/></svg>
+                            <span>Google Play</span>
+                        </a>
+                        <a href="https://apps.microsoft.com/detail/9pbjqrbp0nw1" target="_blank" rel="noopener" class="store-icon-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="1"></rect><rect x="13" y="3" width="8" height="8" rx="1"></rect><rect x="3" y="13" width="8" height="8" rx="1"></rect><rect x="13" y="13" width="8" height="8" rx="1"></rect></svg>
+                            <span>Microsoft Store</span>
+                        </a>
+                        <span class="store-tip-wrap">
+                            <span class="store-icon-link" role="button" tabindex="0" onclick="toggleStoreTip(this)" onkeydown="handleStoreTipKey(event, this)">
+                                <span class="mono-badge-sm">AG</span><span>AppGallery</span>
+                            </span>
+                            <span class="store-tip"><span class="pl">Wyszukaj "TACHO app" bezpośrednio w AppGallery.</span><span class="en">Search "TACHO app" directly in AppGallery.</span></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-title"><span class="pl">Informacja prawna / zrzeczenie się odpowiedzialności</span><span class="en">Legal notice / disclaimer</span></div>
+            <div class="glass-group">
+                <div class="group-item">
+                    <p class="legal-text">
+                        <span class="pl">Aplikacja nie jest oficjalnym urządzeniem pomiarowym ani tachografem w rozumieniu przepisów i nie zastępuje karty kierowcy ani wykresówek. Obliczenia i powiadomienia w niej zawarte mają charakter wyłącznie pomocniczy i informacyjny. Twórcy aplikacji nie ponoszą odpowiedzialności za błędy w rejestracji danych przez użytkownika, błędne wpisy manualne ani kary nałożone przez służby kontrolne (np. ITD, BAG).</span>
+                        <span class="en">The app is not an official measuring device or tachograph within the meaning of the law, and it does not replace a driver card or tachograph charts. The calculations and notifications it provides are for guidance and informational purposes only. The developers are not liable for errors in data logging by the user, incorrect manual entries, or penalties imposed by inspection authorities (e.g. ITD, BAG).</span>
+                    </p>
+                    <div class="legal-links-row pl">
+                        <a href="https://pl.kocie.mba/regulamin.html" class="legal-pill">Regulamin</a>
+                        <a href="https://pl.kocie.mba/rodo.html" class="legal-pill">Polityka prywatności (RODO)</a>
+                        <a href="https://pl.kocie.mba/cookies.html" class="legal-pill">Cookies</a>
+                    </div>
+                    <div class="legal-links-row en">
+                        <a href="https://en.kocie.mba/terms.html" class="legal-pill">Terms of Service</a>
+                        <a href="https://en.kocie.mba/gdpr.html" class="legal-pill">Privacy Policy (GDPR)</a>
+                        <a href="https://en.kocie.mba/cookies.html" class="legal-pill">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-title">©️ <span class="pl">Licencja i prawa autorskie</span><span class="en">License and copyright</span></div>
+            <p class="legal-text">
+                <span class="pl">Wszelkie prawa zastrzeżone. Aplikacja udostępniana jest w repozytorium wyłącznie w celu pobrania i osobistej instalacji. Kopiowanie, modyfikowanie, dekompilacja oraz redystrybucja aplikacji w zmodyfikowanej formie lub pod inną nazwą są surowo zabronione.</span>
+                <span class="en">All rights reserved. This app is made available in this repository solely for download and personal installation. Copying, modifying, decompiling (reverse engineering), and redistributing the app in a modified form or under a different name are strictly prohibited.</span>
+            </p>
+        </section>
+
+        <footer>
+            <span class="pl">Kontakt</span><span class="en">Contact</span>: <a href="mailto:damian@kocie.mba">damian@kocie.mba</a><br>
+            <a href="https://github.com/kociembadamian/tacho-app" target="_blank" rel="noopener">github.com/kociembadamian/tacho-app</a>
+            <br><br>
+            <strong>DGSA drs. D. Kociemba</strong> &middot; Spalaan 6, 5628 ZG Eindhoven (NL) &middot; KvK: 95907130 &middot; BTW/VAT: NL005178103B20
+            <br><br>
+            © 2025 - ∞ <a href="https://kocie.mba">kocie.mba</a> &middot; <span class="pl">część</span><span class="en">part of</span> noviqa.group
+        </footer>
+
+    </div>
+
+    <script>
+        function setSiteLang(lang) {
+            document.documentElement.classList.remove('lang-pl', 'lang-en');
+            document.documentElement.classList.add('lang-' + lang);
+            document.documentElement.lang = lang;
+            try { localStorage.setItem('siteLang', lang); } catch (e) {}
+        }
+        function toggleStoreTip(btn) {
+            var wrap = btn.closest('.store-tip-wrap');
+            if (!wrap) return;
+            var wasOpen = wrap.classList.contains('tip-open');
+            document.querySelectorAll('.store-tip-wrap.tip-open').forEach(function (el) { el.classList.remove('tip-open'); });
+            if (!wasOpen) wrap.classList.add('tip-open');
+        }
+        function handleStoreTipKey(e, el) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleStoreTip(el); }
+        }
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.store-tip-wrap')) {
+                document.querySelectorAll('.store-tip-wrap.tip-open').forEach(function (el) { el.classList.remove('tip-open'); });
+            }
+        });
+    </script>
+</body>
+</html>
